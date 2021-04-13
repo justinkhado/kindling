@@ -17,6 +17,11 @@
             <ul>
                 {% if g.user %}
                     <li>
+                        {% block matches %}
+                            <a href="{{ url_for('chat.matches') }}">Matches</a>
+                        {% endblock %}
+                    </li>
+                    <li>
                         {% block profile %}
                             <a href="{{ url_for('books.profile') }}">{{ g.user['username'] }}</a>
                         {% endblock %}

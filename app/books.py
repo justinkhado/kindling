@@ -8,6 +8,7 @@ from app.db import get_db
 
 bp = Blueprint('books', __name__)
 
+
 def has_profile(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
@@ -22,26 +23,27 @@ def has_profile(view):
 
     return wrapped_view
 
+
 def get_new_book(user_id):
     db = get_db()
 
     books = db.execute(
-        'SELECT id, seen_books.user_id, title, desc'
+        'SELECT id, title, desc'
         ' FROM books'
         ' LEFT JOIN seen_books'
         '  ON books.id = seen_books.book_id'
-        ' WHERE id != (SELECT id FROM books WHERE user_id = ?)',
-        (user_id,)
+        ' WHERE books.user_id != ? AND'
+        '  books.id NOT IN ('
+        '   SELECT book_id FROM seen_books WHERE user_id = ?)',
+        (user_id, user_id)
     ).fetchall()
 
     profile = None
-    for book in books:
-        if book['user_id'] is None:
-            profile = book
-            break
+    if len(books) != 0:
+        profile = books[0]
 
     genres = []
-    book = {'desc': 'No books left'}
+    book = {'title': '', 'desc': 'No books left'}
     if profile is not None:
         genre_ids = db.execute(
             'SELECT genre_id FROM book_genres'
@@ -63,13 +65,45 @@ def get_new_book(user_id):
 
     return book
 
-def add_seen_book(user_id, book, liked):
+
+def add_seen_book(user_id, book):
     db = get_db()
     db.execute(
-        'INSERT INTO seen_books (user_id, book_id, liked)'
-        ' VALUES (?, ?, ?)', (user_id, book['id'], liked)
+        'INSERT INTO seen_books (user_id, book_id)'
+        ' VALUES (?, ?)', (user_id, book['id'])
     )
     db.commit()
+
+
+def match_user(user_id, book):
+    db = get_db()
+
+    user2_id = db.execute(
+        'SELECT user_id FROM books'
+        ' WHERE id = ?', (book['id'],)
+    ).fetchone()[0]
+
+    matches = db.execute(
+        'SELECT user1_id FROM chatroom'
+        ' WHERE user2_id = ?', (user_id,)
+    ).fetchall()
+
+    for match in matches:
+        if match[0] == user2_id:
+            db.execute(
+                'UPDATE chatroom'
+                ' SET connected = 1'
+                ' WHERE user1_id = ? AND user2_id = ?',
+                (user2_id, user_id)
+            )
+            db.commit()
+            return
+
+    db.execute(
+        'INSERT INTO chatroom (user1_id, user2_id, connected)'
+        ' VALUES (?, ?, ?)', (user_id, user2_id, 0)
+    )
+
 
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
@@ -77,12 +111,16 @@ def add_seen_book(user_id, book, liked):
 def index():
     user_id = session.get('user_id')
     book = get_new_book(user_id)
+    if book['title'] == '':
+        return render_template('books/index.html', book=book)
 
     if request.method == 'POST':
         if request.form.get('action') == 'cancel':
-            add_seen_book(user_id, book, liked=0)
+            add_seen_book(user_id, book)
         elif request.form.get('action') == 'like':
-            add_seen_book(user_id, book, liked=1)
+            match_user(user_id, book)
+            add_seen_book(user_id, book)
+        book = get_new_book(user_id)
 
     return render_template('books/index.html', book=book)
 
@@ -182,4 +220,3 @@ def edit_profile():
         flash(error)
 
     return render_template('books/edit_profile.html')
-

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Matches{% endblock %}</h1>
+{% endblock %}
+
+{% block home %}
+    <a href="{{ url_for('books.index') }}">Home</a>
+{% endblock %}
+
+{% block matches %}
+    <p style="font-size: 16;">Matches</p>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS genres;
 DROP TABLE IF EXISTS book_genres;
 DROP TABLE IF EXISTS seen_books;
+DROP TABLE IF EXISTS chatroom;
+DROP TABLE IF EXISTS messages;
 
 CREATE TABLE users (
     id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
@@ -33,7 +35,24 @@ CREATE TABLE book_genres (
 CREATE TABLE seen_books (
     user_id     INT         NOT NULL,
     book_id     INT         NOT NULL,
-    liked       INT         NOT NULL    CHECK (liked IN (0, 1)),
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(book_id) REFERENCES books(id) ON DELETE CASCADE
+);
+
+CREATE TABLE chatroom (
+    id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
+    user1_id    INT         NOT NULL,
+    user2_id    INT         NOT NULL,
+    connected   INT         NOT NULL,
+    FOREIGN KEY(user1_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(user2_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE messages (
+    id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
+    room_id     INT         NOT NULL,
+    user_id     INT         NOT NULL,
+    message     TEXT        NOT NULL,
+    FOREIGN KEY(room_id) REFERENCES chatroom(id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE
 );

@@ -30,4 +30,7 @@ def create_app(test_config=None):
     app.register_blueprint(books.bp)
     app.add_url_rule('/', endpoint='index')
 
+    from . import chat
+    app.register_blueprint(chat.bp)
+
     return app
