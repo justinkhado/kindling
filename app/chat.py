@@ -55,7 +55,7 @@ def matches():
 def chatroom():
     room = session['room']
     user_id = session.get('user_id')
-    username = get_username(user_id);
+    username = get_username(user_id)
 
     if user_id == room.split('_')[0]:
         other_user = get_db().execute(

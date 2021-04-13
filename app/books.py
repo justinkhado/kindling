@@ -5,6 +5,7 @@ from flask import (
 )
 from app.auth import login_required
 from app.db import get_db
+from app import app, ALLOWED_EXTENSIONS
 
 bp = Blueprint('books', __name__)
 
@@ -105,6 +106,18 @@ def match_user(user_id, book):
     )
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def upload_file(file):
+    user_id = session.get('user_id')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], user_id, filename))
+
+
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 @has_profile
@@ -161,6 +174,9 @@ def profile():
 @login_required
 def edit_profile():
     if request.method == 'POST':
+        #file = request.files['image']
+        #upload_file(file)
+
         user_id = session.get('user_id')
         title = request.form['title']
         desc = request.form['desc']
