@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Main{% endblock %}
+{% block header %}<br><br>{% endblock %}
+
+{% block home %}
+    <p style="font-size:16; color:white;">Home</p>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div>
+            {% block edit_profile %}{% endblock %}
+        </div>
+        <div class="book">
+            <img class="cover" src="{{ url_for('static', filename='img/It.jpg') }}">
+            <div class="about">
+                <div class="title">
+                    <p>{{ book['title'] }}</p>
+                </div>
+                <div class="genre">
+                    {% for genre in book['genres'] %}
+                        <i>
+                            {{ genre }}{% if not loop.last %},{% endif %}
+                        </i>
+                    {% endfor %}
+                </div>
+                <div class="desc">
+                    <p>{{ book['desc'] }}</p>
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kindling | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="banner">
+        <div>{% block home %}{% endblock %}</div>
+        <h1>Kindling</h1>
+        <nav>
+            <ul>
+                {% if g.user %}
+                    <li>
+                        {% block profile %}
+                            <a href="{{ url_for('books.profile') }}">{{ g.user['username'] }}</a>
+                        {% endblock %}
+                    </li>
+                    <li>
+                        <a href="{{ url_for('auth.logout') }}">Log Out</a>
+                    </li>
+                {% else %}
+                    {% block login %}{% endblock %}
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </section>
+</body>

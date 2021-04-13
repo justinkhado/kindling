@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kindling</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="header">
+        <a class="arrow" id="arrow" onclick="Previous()">
+            <img src="{{ url_for('static', filename='img/arrow.png') }}" alt="">
+        </a>
+        <h1>Kindling</h1>
+    </div>
+    <div class="container">
+
+        <div class="previous hidden1">
+            <h3>Options:</h3>
+            <div class="category">
+                <p>Show Disliked Books:</p>
+                <button class="btn-close btn-choose" onclick="ShowDisLike()"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/cancel.png') }}" alt="">
+                </button>
+            </div>
+            <div class="category">
+                <p>Show Liked Books:</p>
+                <button class="btn-like btn-choose" onclick="ShowLike()"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/heart.png') }}" alt="">
+                </button>
+            </div>
+            <div class="category">
+                <p>Show Super Liked Books:</p>
+                <button class="btn-super btn-choose" onclick="ShowSuperLike()"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/star.png') }}" alt="">
+                </button>
+            </div>
+            <div class="category">
+                <p>Reset</p>
+                <button class="btn-reset btn-choose" onclick="Reset()"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/reset.png') }}" alt="">
+                </button>
+            </div>
+        </div>
+        <div class="nothing">
+            <h2>None</h2>
+        </div>
+        <div class="list">
+            <div class="item">
+                <div class="img-wrap">
+                    <img class="img" src="{{ url_for('static', filename='img/Diary of a Wimpy Kid.jpg') }}" alt="">
+                    <div class="about">
+                        <div class="name">
+                            <h2>Diary of a Wimpy Kid</h2>
+                        </div>
+                        <div class="genre">
+                            <h3>Realistic fiction, comedy</h3>
+                        </div>
+                        <div class="description">
+                            <h4>The books follow teenager Greg Heffley, who illustrates his daily life in a secret
+                                diary.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item hidden">
+                <div class="img-wrap">
+                    <img class="img" src="{{ url_for('static', filename='img/It.jpg') }}" alt="">
+                    <div class="about">
+                        <div class="name">
+                            <h2>It</h2>
+                        </div>
+                        <div class="genre">
+                            <h3>Horror fiction, Thriller</h3>
+                        </div>
+                        <div class="description">
+                            <h4>It is a 1986 horror novel by American author Stephen King.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn">
+                <button class="btn-close btn-choose" onclick="Common(1)"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/cancel.png') }}" alt="">
+                </button>
+                <button class="btn-like btn-choose" onclick="Common(2)"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/heart.png') }}" alt="">
+                </button>
+                <button class="btn-super btn-choose" onclick="Common(3)"><img class="btn-img"
+                        src="{{ url_for('static', filename='img/star.png') }}" alt="">
+                </button>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="{{url_for('static', filename='main.js')}}"></script>
+
+</html>

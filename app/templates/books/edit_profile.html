@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{% block title %}Edit Profile{% endblock %}</h2>
+{% endblock %}
+
+{% block home %}
+    <a href="{{ url_for('books.index') }}">Home</a>
+{% endblock %}
+
+{% block content %}
+    <form class="edit_profile" method="post">
+        <label for="title">Title</label>
+        <input name="title" id="title" required autofocus>
+        <label for="genre">Genre(s)</label>
+        <i style="color:gray;font-size:small;">Seperate multiple genres with a comma</i>
+        <input name="genre" id="genre" required>
+        <label for="desc">Description</label>
+        <textarea name="desc" id="desc" required></textarea>
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}

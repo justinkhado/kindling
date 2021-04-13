@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    font-family: Open Sans;
+    min-width: 30%;
+}
+
+.banner {
+    display: flex;
+    background: #333333;
+    margin: 0px;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.banner div, .banner nav {
+    flex: 1;
+}
+
+.banner div {
+    align-self: center;
+    padding: 0.5rem;
+}
+
+.banner div p {
+    margin: 0;
+}
+
+.banner div a {
+    color: #ffffff;
+}
+
+.banner h1
+{
+    margin: 0;
+    color: #ffffff;
+    align-self: center;
+}
+
+.banner nav ul {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+}
+
+.banner nav ul li {
+    align-self: center;
+}
+
+.banner nav ul li p {
+    margin: 0;
+}
+
+.banner nav ul li a, .banner nav ul li p {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    color: #ffffff;
+}
+
+.content { 
+    padding: 0 1rem 1rem; 
+}
+
+.content header {
+    display: flex;
+    justify-content: center;
+}
+
+.content form {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    max-width: 200px;
+}
+
+.content label { 
+    font-weight: bold; 
+    margin-bottom: 0.5em; 
+}
+
+.content input, .content textarea { 
+    margin-bottom: 1em; 
+}
+
+.content textarea { 
+    min-height: 12em; 
+    resize: vertical; 
+}
+
+.content .flash {
+    display: flex;
+    justify-content: center;
+    color: red;
+    margin-bottom: 1em;
+}
+
+input[type=submit] { 
+    align-self: start; 
+    min-width: 5em; 
+}
+
+.edit_profile {
+    min-width: 250px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.container div:first-child, .container div:last-child {
+    flex: 1;
+}
+
+.container div:first-child {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1em;
+}
+
+.book {
+    display: flex;
+    flex-direction: row;
+    max-width: 40%;
+}
+
+.cover {
+    flex: 0 0 auto;
+}
+
+.about {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1em;
+}
+
+.about .title {
+    text-decoration: underline;
+    font-size: x-large;
+    align-self: flex-start;
+    max-height: 15%;
+}
+
+.about .genre {
+    font-style: italic;
+    color: gray;
+}

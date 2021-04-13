@@ -1,0 +1,17 @@
+{% extends 'books/index.html' %}
+
+{% block header %}
+    <h1>{% block title %}Profile{% endblock %}</h1>
+{% endblock %}
+
+{% block home %}
+    <a href="{{ url_for('books.index') }}">Home</a>
+{% endblock %}
+
+{% block profile %}
+    <p style="font-size: 16;">{{ g.user['username'] }}</p>
+{% endblock %}
+
+{% block edit_profile %}
+    <a href="{{ url_for('books.edit_profile') }}"><h3>Edit</h3></a>
+{% endblock %}
