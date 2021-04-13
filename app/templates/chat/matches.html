@@ -13,5 +13,23 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="matches">
+        <ul>
+            {% for match in matches %}
+                <li>
+                    <form method="POST">
+                        {% if user_id < match['id'] %}
+                            <button class="match_button" name="room" value="{{ user_id ~ '_' ~ match['id'] }}">
+                                {{ match['username'] }}
+                            </button>
+                        {% else %}
+                            <button class="match_button" name="room" value="{{ match['id'] ~ '_' ~ user_id }}">
+                                {{ match['username'] }}
+                            </button>
+                        {% endif %}
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

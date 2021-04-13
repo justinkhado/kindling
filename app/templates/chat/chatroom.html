@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Chatroom{% endblock %}
+
+{% block header %}
+    <h1>{{ data['other_user'] }}</h1>
+{% endblock %}
+
+{% block home %}
+    <a href="{{ url_for('books.index') }}">Home</a>
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div class="chatroom">
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var url = window.location.href;
+                var socket = io.connect(url);
+                               
+                username = JSON.parse('{{ data["username"] | tojson }}');
+                socket.emit('join', {'username': username});
+
+                socket.on('send message', function(data) {
+                    $('#messages').append('<li><strong>' + username + '</strong>: ' + data['message'] + '</li>');
+                });
+
+                $('#sendbutton').on('click', function () {
+                    socket.emit('send_message', $('#send_message').val());
+                    $('#send_message').val('');
+                });
+            });
+        </script>
+        <ul id="messages"></ul>
+        <div class='chat_send'>
+            <input type="text" id="send_message">
+            <button class='send_button' id="sendbutton">Send</button>
+        </div>
+    </div>
+{% endblock %}

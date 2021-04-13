@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template
+from flask_socketio import SocketIO
 
 
 def create_app(test_config=None):
@@ -18,19 +19,8 @@ def create_app(test_config=None):
         os.makedirs(os.path.join(app.instance_path))
     except OSError:
         pass
-
-
-    from . import db
-    db.init_app(app)
-
-    from . import auth
-    app.register_blueprint(auth.bp)
-
-    from . import books
-    app.register_blueprint(books.bp)
-    app.add_url_rule('/', endpoint='index')
-
-    from . import chat
-    app.register_blueprint(chat.bp)
-
+    
     return app
+
+app = create_app()
+socketio = SocketIO(app, cors_allowed_origins='*')

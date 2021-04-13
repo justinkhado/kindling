@@ -180,3 +180,73 @@ button {
 .btn-choose:hover {
     box-shadow: 0 0 10px 0 #333333 ;
 }
+
+.send_button {
+    padding: 0.1rem;
+}
+
+.match_button {
+	display: inline-block;
+    margin: 0;
+    padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 0.317rem;
+	background-color: #aaa;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 1rem;
+    line-height: 1.5;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-webkit-font-smoothing: antialiased;
+    width: 10rem;
+}
+
+.match_button:hover {
+	opacity: 0.85;
+}
+
+.match_button:active {
+	box-shadow: inset 0 3px 4px hsla(0, 0%, 0%, 0.2);
+}
+
+.match_button:focus {
+	outline: thin dotted #444;
+	outline: 5px auto -webkit-focus-ring-color;
+	outline-offset: -2px;
+}
+
+.matches {
+    display: flex;
+    justify-content: center;
+}
+
+.matches ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.matches ul li {
+    padding: 0.5rem;
+}
+
+.chatroom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chatroom ul {
+    list-style: none;
+}
+
+.chatroom input {
+    margin-bottom: 0;
+}
+
+.chat_send {
+    display: flex;
+}

@@ -53,6 +53,7 @@ CREATE TABLE messages (
     room_id     INT         NOT NULL,
     user_id     INT         NOT NULL,
     message     TEXT        NOT NULL,
+    time        TEXT        NOT NULL,
     FOREIGN KEY(room_id) REFERENCES chatroom(id) ON DELETE CASCADE,
     FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE
 );
