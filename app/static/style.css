@@ -65,7 +65,7 @@ body {
     justify-content: center;
 }
 
-.content form {
+.content .auth {
     display: flex;
     margin: auto;
     flex-direction: column;
@@ -143,4 +143,40 @@ input[type=submit] {
 .about .genre {
     font-style: italic;
     color: gray;
+}
+
+button {
+    outline: none;
+    cursor: pointer;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-img {
+    width: 30px;
+    padding: 5px;
+    margin-top: 4px;
+}
+
+.btn-choose {
+    border-radius: 50%;
+    border: 0;
+    background: #ffffff;
+    width: 60px;
+    height: 60px;
+    margin: 20px;
+    box-shadow: 0 0 5px 0 #333333 ;
+}
+
+.btn-close .btn-img {
+    width: 25px ;
+}
+
+.btn-choose:hover {
+    box-shadow: 0 0 10px 0 #333333 ;
 }
