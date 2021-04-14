@@ -40,6 +40,10 @@ def get_matches(user_id):
     return matches
 
 
+def get_messages():
+    pass
+
+
 @bp.route('/matches', methods=['GET', 'POST'])
 @login_required
 @has_profile
@@ -69,6 +73,7 @@ def chatroom():
         other_user = get_username(ids[0])
 
     data = {
+        'user_id': user_id,
         'username': username,
         'other_user': other_user,
         'room': room,
@@ -79,6 +84,14 @@ def chatroom():
 
 @socketio.on('send_message', namespace='/chat/chatroom')
 def message(data):
+    db = get_db()
+    db.execute(
+        'INSERT INTO messages (room_id, username, message, time)'
+        ' VALUES (?, ?, ?, CURRENT_TIMESTAMP)',
+        (session['room'], data['username'], data['message'])
+    )
+    db.commit()
+
     data = {
         'username': data['username'],
         'message': data['message']

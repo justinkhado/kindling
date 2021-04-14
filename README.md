@@ -24,3 +24,7 @@ TODO
 * Run `main.py`
     * App runs at localhost by default
 
+## TO-DO
+* when a user updates their profile, all their matches should clear
+* improve HTML/CSS design
+* refactor *everything*

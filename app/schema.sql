@@ -53,9 +53,8 @@ CREATE TABLE chatroom (
 CREATE TABLE messages (
     id          INTEGER     PRIMARY KEY     AUTOINCREMENT,
     room_id     INT         NOT NULL,
-    user_id     INT         NOT NULL,
+    username    TEXT        NOT NULL,
     message     TEXT        NOT NULL,
     time        TEXT        NOT NULL,
-    FOREIGN KEY(room_id) REFERENCES chatroom(id) ON DELETE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE
+    FOREIGN KEY(room_id) REFERENCES chatroom(id) ON DELETE CASCADE
 );

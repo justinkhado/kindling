@@ -237,7 +237,10 @@ button {
 .chatroom {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
 }
 
 .chatroom ul {
@@ -246,8 +249,18 @@ button {
 
 .chatroom input {
     margin-bottom: 0;
+    width: 350px;
 }
 
 .chat_send {
+    align-self: flex-end;
+    padding-top: 1rem;
+}
+
+.messages {
+    height: 400px;
+    width: 600px;
+    overflow-y: scroll;
     display: flex;
+    flex-direction: column-reverse;
 }
