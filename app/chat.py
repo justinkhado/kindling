@@ -9,6 +9,7 @@ from app import socketio
 
 bp = Blueprint('chat', __name__, url_prefix='/chat')
 
+
 def get_username(user_id):
     username = get_db().execute(
         'SELECT username FROM users'
@@ -16,6 +17,7 @@ def get_username(user_id):
     ).fetchone()[0]
 
     return username
+
 
 def get_matches(user_id):
     db = get_db()
@@ -29,9 +31,11 @@ def get_matches(user_id):
     matches = []
     for match in matches_query:
         if match[0] == user_id:
-            matches.append({'id': match[1], 'username': get_username(match[1])})
+            matches.append(
+                {'id': match[1], 'username': get_username(match[1])})
         elif match[1] == user_id:
-            matches.append({'id': match[0], 'username': get_username(match[0])})
+            matches.append(
+                {'id': match[0], 'username': get_username(match[0])})
 
     return matches
 
@@ -57,16 +61,12 @@ def chatroom():
     user_id = session.get('user_id')
     username = get_username(user_id)
 
-    if user_id == room.split('_')[0]:
-        other_user = get_db().execute(
-            'SELECT username FROM users'
-            ' WHERE id = ?', (room.split('_')[0],)
-        ).fetchone()[0]
-    else:
-        other_user = get_db().execute(
-            'SELECT username FROM users'
-            ' WHERE id = ?', (room.split('_')[1],)
-        ).fetchone()[0]
+    ids = room.split('_')
+    other_user = ''
+    if str(user_id) == ids[0]:
+        other_user = get_username(ids[1])
+    elif str(user_id) == ids[1]:
+        other_user = get_username(ids[0])
 
     data = {
         'username': username,
@@ -79,9 +79,9 @@ def chatroom():
 
 @socketio.on('send_message', namespace='/chat/chatroom')
 def message(data):
-    print(data)
     data = {
-        'message': data
+        'username': data['username'],
+        'message': data['message']
     }
     emit('send message', data, to=session['room'])
 

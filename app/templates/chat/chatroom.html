@@ -20,14 +20,19 @@
                 var socket = io.connect(url);
                                
                 username = JSON.parse('{{ data["username"] | tojson }}');
+
                 socket.emit('join', {'username': username});
 
                 socket.on('send message', function(data) {
-                    $('#messages').append('<li><strong>' + username + '</strong>: ' + data['message'] + '</li>');
+                    $('#messages').append('<li><strong>' + data['username'] + '</strong>: ' + data['message'] + '</li>');
                 });
-
+                
                 $('#sendbutton').on('click', function () {
-                    socket.emit('send_message', $('#send_message').val());
+                    data = {
+                        'username': username,
+                        'message': $('#send_message').val()
+                    }
+                    socket.emit('send_message', data);
                     $('#send_message').val('');
                 });
             });
