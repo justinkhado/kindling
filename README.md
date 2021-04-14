@@ -2,10 +2,6 @@
 
 Kindling is a Tinder-like app for finding interesting books.
 
-## Description
-
-TODO
-
 ## Getting Started
 
 ### Dependencies
@@ -26,5 +22,7 @@ TODO
 
 ## TO-DO
 * when a user updates their profile, remove corresponding entries from seen_books
+* add client-side chat clear
+* let users unmatch
 * improve HTML/CSS design
 * refactor *everything*
