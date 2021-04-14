@@ -70,6 +70,9 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
+    '''
+    If user session is active, automatically log user in when visiting website
+    '''
     user_id = session.get('user_id')
 
     if user_id is None:
@@ -88,6 +91,9 @@ def logout():
 
 
 def login_required(view):
+    '''
+    wrapper function that redirects user to login page if not logged in
+    '''
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:

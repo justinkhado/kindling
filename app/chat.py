@@ -61,6 +61,9 @@ def get_messages(room_id):
 @bp.route('/matches', methods=['GET', 'POST'])
 @login_required
 def matches():
+    '''
+    show all matches with user
+    '''
     if request.method == 'POST':
         room = request.form['room']
         session['room'] = room
@@ -74,6 +77,9 @@ def matches():
 
 @bp.route('/chatroom')
 def chatroom():
+    '''
+    private chatroom for matches
+    '''
     if 'room' not in session:
         return redirect(url_for('chat.matches'))
 
@@ -101,6 +107,9 @@ def chatroom():
 
 @socketio.on('send_message', namespace='/chat/chatroom')
 def message(data):
+    '''
+    send message to room using user input
+    '''
     db = get_db()
     db.execute(
         'INSERT INTO messages (room_id, username, message, time)'
@@ -118,6 +127,9 @@ def message(data):
 
 @socketio.on('join', namespace='/chat/chatroom')
 def on_join(data):
+    '''
+    add user to room
+    '''
     username = data['username']
     room = session['room']
     join_room(room)

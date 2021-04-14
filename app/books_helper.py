@@ -1,3 +1,7 @@
+'''
+This module is consists of a library of helper methods for books.py
+'''
+
 import os
 import functools
 from flask import redirect, session, url_for
@@ -6,8 +10,10 @@ from app import app, ALLOWED_EXTENSIONS
 
 
 def add_genre(db, book_id, genres):
+    '''
+    if genre doesn't exist, add to genres table
+    '''
     for genre in genres:
-        # if genre doesn't exist, add to genres table
         if db.execute(
             'SELECT id FROM genres WHERE genre = ?', (genre,)
         ).fetchone() is None:
@@ -26,7 +32,6 @@ def add_genre(db, book_id, genres):
 
 
 def add_profile(db, user_id, title, desc):
-    # add new profile
     db.execute(
         'INSERT INTO books (user_id, title, desc)'
         ' VALUES (?, ?, ?)', (user_id, title, desc)
@@ -44,12 +49,17 @@ def add_seen_book(user_id, book):
 
 
 def allowed_file(filename):
+    '''
+    check if a file type is allowed
+    '''
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def delete_profile(db, user_id):
-    # delete original profile if it exists
+    '''
+    delete original profile if it exists
+    '''
     if db.execute(
         'SELECT id FROM books WHERE user_id = ?', (user_id,)
     ).fetchone() is not None:
@@ -58,7 +68,12 @@ def delete_profile(db, user_id):
         )
         db.commit()
 
+
 def get_filename(id):
+    '''
+    returns the filename of the profile cover that corresponds
+    to user <id>
+    '''
     filename = os.path.join('profile_images', str(id) + '.')
     for ext in ALLOWED_EXTENSIONS:
         if os.path.isfile(os.path.join(os.getcwd(), 'app', 'static', filename + ext)):
@@ -85,8 +100,12 @@ def get_genres_from_id(book_id, db):
 
 
 def get_new_book(user_id):
+    '''
+    returns profile that user has not seen
+    '''
     db = get_db()
 
+    # get all books that user hasn't seen
     books = db.execute(
         'SELECT id, books.user_id, title, desc'
         ' FROM books'
@@ -98,12 +117,14 @@ def get_new_book(user_id):
         (user_id, user_id)
     ).fetchall()
 
+    # get one profile that user hasn't seen
     profile = None
     if len(books) != 0:
         profile = books[0]
 
     genres = []
     book = {'user_id': None, 'title': '', 'desc': 'No books left'}
+    # get profile details
     if profile is not None:
         genre_ids = db.execute(
             'SELECT genre_id FROM book_genres'
@@ -128,6 +149,10 @@ def get_new_book(user_id):
 
 
 def has_profile(view):
+    '''
+    wrapper function that redirects user to edit profile
+    page if user does not have a profile
+    '''
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         profile = get_db().execute(
@@ -143,6 +168,10 @@ def has_profile(view):
 
 
 def match_user(user_id, book):
+    '''
+    add into database whether user liked a profile
+    or disliked a profile
+    '''
     db = get_db()
 
     user2_id = db.execute(
@@ -173,6 +202,9 @@ def match_user(user_id, book):
 
 
 def upload_file(file):
+    '''
+    uploads user provided image intended for book cover
+    '''
     user_id = session.get('user_id')
     if file and allowed_file(file.filename):
         extension = file.filename.rsplit('.', 1)[1].lower()

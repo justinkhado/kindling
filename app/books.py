@@ -24,6 +24,7 @@ def index():
     if book['title'] == '':
         return render_template('books/index.html', book=book)
 
+    # register if user liked or disliked a profile
     if request.method == 'POST':
         if request.form.get('action') == 'cancel':
             add_seen_book(user_id, book)
@@ -43,6 +44,9 @@ def index():
 @login_required
 @has_profile
 def profile():
+    '''
+    display user profile
+    '''
     user_id = session.get('user_id')
     db = get_db()
 
@@ -71,6 +75,7 @@ def edit_profile():
         file = request.files['image']
         upload_file(file)
 
+        # get profile data
         user_id = session.get('user_id')
         title = request.form['title']
         desc = request.form['desc']
@@ -85,6 +90,7 @@ def edit_profile():
         elif not desc:
             error = 'Description required.'
 
+        # remove old user profile and add new user profile
         if error is None:
             db = get_db()
             delete_profile(db, user_id)
