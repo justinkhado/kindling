@@ -1,8 +1,8 @@
 import os
 import functools
-from flask import session
+from flask import redirect, session, url_for
 from app.db import get_db
-from app import ALLOWED_EXTENSIONS
+from app import app, ALLOWED_EXTENSIONS
 
 
 def add_genre(db, book_id, genres):

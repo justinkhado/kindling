@@ -37,10 +37,16 @@
                 });
             });
         </script>
-        <div class="messages"><ul id="messages"></ul></div>
-        <div class='chat_send'>
-            <input type="text" id="send_message">
-            <button class='send_button' id="sendbutton">Send</button>
+        <div class="messages">
+            <ul id="messages">
+                {% for row in data['messages'] %}
+                    <li><strong>{{ row['username'] }}</strong>: {{ row['message'] }}</li>
+                {% endfor %}
+            </ul>
         </div>
+        <form class='chat_send'>
+            <input type="text" id="send_message" autofocus>
+            <button class='send_button' id="sendbutton">Send</button>
+        </form>
     </div>
 {% endblock %}

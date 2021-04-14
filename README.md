@@ -25,6 +25,6 @@ TODO
     * App runs at localhost by default
 
 ## TO-DO
-* when a user updates their profile, all their matches should clear
+* when a user updates their profile, remove corresponding entries from seen_books
 * improve HTML/CSS design
 * refactor *everything*

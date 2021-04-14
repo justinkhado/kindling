@@ -1,4 +1,4 @@
-PRAGMA foreign_keys;
+PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS books;

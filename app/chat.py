@@ -40,13 +40,26 @@ def get_matches(user_id):
     return matches
 
 
-def get_messages():
-    pass
+def get_messages(room_id):
+    message_query = get_db().execute(
+        'SELECT username, message'
+        ' FROM messages'
+        ' WHERE room_id = ?'
+        ' ORDER BY time', (room_id,)
+    ).fetchall()
+
+    messages = []
+    for row in message_query:
+        messages.append({
+            'username': row['username'],
+            'message': row['message']
+        })
+
+    return messages
 
 
 @bp.route('/matches', methods=['GET', 'POST'])
 @login_required
-@has_profile
 def matches():
     if request.method == 'POST':
         room = request.form['room']
@@ -61,6 +74,9 @@ def matches():
 
 @bp.route('/chatroom')
 def chatroom():
+    if 'room' not in session:
+        return redirect(url_for('chat.matches'))
+
     room = session['room']
     user_id = session.get('user_id')
     username = get_username(user_id)
@@ -77,6 +93,7 @@ def chatroom():
         'username': username,
         'other_user': other_user,
         'room': room,
+        'messages': get_messages(room)
     }
 
     return render_template('chat/chatroom.html', data=data)

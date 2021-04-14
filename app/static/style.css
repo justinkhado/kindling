@@ -132,6 +132,8 @@ input[type=submit] {
     display: flex;
     flex-direction: column;
     padding-left: 1em;
+    align-self: flex-start;
+    min-width: 10rem;
 }
 
 .about .title {
