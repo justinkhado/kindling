@@ -1,5 +1,5 @@
 import functools
-
+import os
 from flask import (
     Blueprint, flash, redirect, render_template, session, request, url_for
 )
@@ -29,7 +29,7 @@ def get_new_book(user_id):
     db = get_db()
 
     books = db.execute(
-        'SELECT id, title, desc'
+        'SELECT id, books.user_id, title, desc'
         ' FROM books'
         ' LEFT JOIN seen_books'
         '  ON books.id = seen_books.book_id'
@@ -44,7 +44,7 @@ def get_new_book(user_id):
         profile = books[0]
 
     genres = []
-    book = {'title': '', 'desc': 'No books left'}
+    book = {'user_id': None, 'title': '', 'desc': 'No books left'}
     if profile is not None:
         genre_ids = db.execute(
             'SELECT genre_id FROM book_genres'
@@ -59,12 +59,53 @@ def get_new_book(user_id):
 
         book = {
             'id': profile['id'],
+            'user_id': profile['user_id'],
             'title': profile['title'],
             'desc': profile['desc'],
             'genres': genres
         }
 
     return book
+
+
+def add_genre(db, book_id, genres):
+    for genre in genres:
+        # if genre doesn't exist, add to genres table
+        if db.execute(
+            'SELECT id FROM genres WHERE genre = ?', (genre,)
+        ).fetchone() is None:
+            db.execute(
+                'INSERT INTO genres (genre) VALUES (?)', (genre,))
+            db.commit()
+
+        genre_id = db.execute(
+            'SELECT id FROM genres WHERE genre = ?', (genre,)
+        ).fetchone()[0]
+        db.execute(
+            'INSERT INTO book_genres (book_id, genre_id)'
+            ' VALUES (?, ?)', (book_id, genre_id)
+        )
+        db.commit()
+
+
+def delete_profile(db, user_id):
+    # delete original profile if it exists
+    if db.execute(
+        'SELECT id FROM books WHERE user_id = ?', (user_id,)
+    ).fetchone() is not None:
+        db.execute(
+            'DELETE FROM books WHERE user_id = ?', (user_id,)
+        )
+        db.commit()
+
+
+def add_profile(db, user_id, title, desc):
+    # add new profile
+    db.execute(
+        'INSERT INTO books (user_id, title, desc)'
+        ' VALUES (?, ?, ?)', (user_id, title, desc)
+    )
+    db.commit()
 
 
 def add_seen_book(user_id, book):
@@ -114,8 +155,9 @@ def allowed_file(filename):
 def upload_file(file):
     user_id = session.get('user_id')
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], user_id, filename))
+        extension = file.filename.rsplit('.', 1)[1].lower()
+        filename = str(user_id) + '.' + extension
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -135,7 +177,17 @@ def index():
             add_seen_book(user_id, book)
         book = get_new_book(user_id)
 
-    return render_template('books/index.html', book=book)
+    has_image = book['title'] != ''
+
+    filename = os.path.join('profile_images', str(book['user_id']) + '.')
+    for ext in ALLOWED_EXTENSIONS:
+        if os.path.isfile(os.path.join(os.getcwd(), 'app', 'static', filename + ext)):
+            filename = filename + ext
+            break
+
+    filename = filename.replace('\\', '/')
+
+    return render_template('books/index.html', book=book, has_image=has_image, filename=filename)
 
 
 @bp.route('/profile')
@@ -167,15 +219,23 @@ def profile():
         'genres': genres
     }
 
-    return render_template('books/profile.html', book=book)
+    filename = os.path.join('profile_images', str(user_id) + '.')
+    for ext in ALLOWED_EXTENSIONS:
+        if os.path.isfile(os.path.join(os.getcwd(), 'app', 'static', filename + ext)):
+            filename = filename + ext
+            break
+
+    filename = filename.replace('\\', '/')
+
+    return render_template('books/profile.html', book=book, filename=filename)
 
 
 @bp.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     if request.method == 'POST':
-        #file = request.files['image']
-        #upload_file(file)
+        file = request.files['image']
+        upload_file(file)
 
         user_id = session.get('user_id')
         title = request.form['title']
@@ -194,42 +254,12 @@ def edit_profile():
             error = 'Description required.'
 
         if error is None:
-            # delete original profile if it exists
-            if db.execute(
-                'SELECT id FROM books WHERE user_id = ?', (user_id,)
-            ).fetchone() is not None:
-                db.execute(
-                    'DELETE FROM books WHERE user_id = ?', (user_id,)
-                )
-                db.commit()
-
-            # add new profile
-            db.execute(
-                'INSERT INTO books (user_id, title, desc)'
-                ' VALUES (?, ?, ?)', (user_id, title, desc)
-            )
-            db.commit()
+            delete_profile(db, user_id)
+            add_profile(db, user_id, title, desc)
             book_id = db.execute(
                 'SELECT id FROM books WHERE user_id = ?', (user_id,)
             ).fetchone()[0]
-
-            for genre in genres:
-                # if genre doesn't exist, add to genres table
-                if db.execute(
-                    'SELECT id FROM genres WHERE genre = ?', (genre,)
-                ).fetchone() is None:
-                    db.execute(
-                        'INSERT INTO genres (genre) VALUES (?)', (genre,))
-                    db.commit()
-
-                genre_id = db.execute(
-                    'SELECT id FROM genres WHERE genre = ?', (genre,)
-                ).fetchone()[0]
-                db.execute(
-                    'INSERT INTO book_genres (book_id, genre_id)'
-                    ' VALUES (?, ?)', (book_id, genre_id)
-                )
-                db.commit()
+            add_genre(db, book_id, genres)
 
             return redirect(url_for('books.profile'))
 

@@ -1,3 +1,5 @@
+PRAGMA foreign_keys;
+
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS genres;

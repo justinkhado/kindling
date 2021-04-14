@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'images')
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'profile_images')
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 def create_app(test_config=None):

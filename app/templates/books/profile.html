@@ -8,6 +8,10 @@
     <a href="{{ url_for('books.index') }}">Home</a>
 {% endblock %}
 
+{% block cover %}
+    <img class="cover" src="{{ url_for('static', filename=filename) }}">
+{% endblock %}
+
 {% block profile %}
     <p style="font-size: 16;">{{ g.user['username'] }}</p>
 {% endblock %}
