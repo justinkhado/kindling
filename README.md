@@ -21,6 +21,7 @@ Kindling is a Tinder-like app for finding interesting books.
     * App runs at localhost by default
 
 ## TO-DO
+* remove config information from source code
 * when a user updates their profile, remove corresponding entries from seen_books
 * add client-side chat clear
 * let users unmatch
