@@ -17,7 +17,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 var url = window.location.href;
-                var socket = io.connect('https://cpsc349-kindling.herokuapp.com/chat/chatroom', {'connect timeout': 1000});
+                var socket = io.connect(url);
                                
                 username = JSON.parse('{{ data["username"] | tojson }}');
 
