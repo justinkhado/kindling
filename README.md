@@ -25,6 +25,7 @@ Kindling is a Tinder-like app for finding interesting books.
 * when a user updates their profile, remove corresponding entries from seen_books
 * add client-side chat clear
 * let users unmatch
+* let users edit **parts** of profiles
 * notify users when a match occurs
 * notify users when they have a new message
 * improve HTML/CSS design
