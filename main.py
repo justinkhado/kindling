@@ -7,4 +7,4 @@ app.add_url_rule('/', endpoint='index')
 app.register_blueprint(chat.bp)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, debug=True)
