@@ -1,6 +1,7 @@
 # Kindling
 
-Kindling is a Tinder-like app for finding interesting books.
+Kindling is a Tinder-like app for finding other people with similar book interests.
+
 Current working version deployed at: https://cpsc349-kindling.herokuapp.com/
 
 ## Getting Started
