@@ -32,7 +32,7 @@ The home screen shows another user's profile that the current user
 can match or decline; then, a new user's profile will appear. The application will go through
 every user profile until there are no more. 
 
-Users will have to wait until another user matches the them in order for a private chatroom to 
+Users will have to wait until another user matches them in order for a private chatroom to 
 appear under "Matches". To test this out, one can create two profiles and match each other.
 The private chatroom was built using web sockets, so the chatbox should update in real time.
 
