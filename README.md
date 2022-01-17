@@ -8,7 +8,7 @@ Test User:
 - username: user1
 - password: password123
 
-![Home Page](/assets/home_page.png)
+![Home Page](/assets/home_page.PNG)
 
 ## Getting Started
 
