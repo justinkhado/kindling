@@ -4,6 +4,12 @@ Kindling is a Tinder-like app for finding other people with similar book interes
 
 Current working version deployed at: https://cpsc349-kindling.herokuapp.com/
 
+Test User:
+- username: user1
+- password: password123
+
+![Home Page](/assets/home_page.png)
+
 ## Getting Started
 
 ### Dependencies
